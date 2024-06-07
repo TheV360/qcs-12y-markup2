@@ -65,7 +65,8 @@ class Markup_12y2 { constructor() {
 	
 	// About __proto__ in object literals:
 	// https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#sec-runtime-semantics-propertydefinitionevaluation
-	const IS_BLOCK = {__proto__:null, code:1, divider:1, ROOT:1, heading:1, quote:1, table:1, table_cell:1, image:1, video:1, audio:1, spoiler:1, align:1, list:1, list_item:1, youtube:1, anchor:1, table_divider:1}
+	const IS_BLOCK = {__proto__:null, code:'block', divider:'block', ROOT:'block', heading:'block', quote:'block', table:'block', table_cell:'block', image:'block', video:'block', audio:'block', spoiler:'block', align:'block', list:'block', list_item:'block', youtube:'block', anchor:'block', table_divider:'block', ruby:'text', key:'text'}
+	// 'text' is for inline-block elements
 	
 
 	// argument processing //
@@ -264,13 +265,13 @@ class Markup_12y2 { constructor() {
 			push(dest, type, o.args, o.content)
 		} }
 		
-		current.prev = type in IS_BLOCK ? 'block' : o.prev
+		current.prev = IS_BLOCK[type] || o.prev
 	}
 	
 	// push empty tag
 	const BLOCK=(type, args)=>{
 		current.content.push({type, args})
-		current.prev = type in IS_BLOCK ? 'block' : 'text'
+		current.prev = IS_BLOCK[type] || 'text'
 	}
 	
 	const NEWLINE=(real)=>{
