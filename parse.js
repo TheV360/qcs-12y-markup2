@@ -145,8 +145,6 @@ class Markup_12y2 { constructor() {
 				if (+h > 1) args.rowspan = +h
 			}
 		}
-		if (rargs.named.bg)
-			args.truecolor = rargs.named.bg
 		return args
 	}
 	const process_row_args=(rargs)=>{
@@ -155,8 +153,6 @@ class Markup_12y2 { constructor() {
 			if ("*"===arg || "#"===arg)
 				args.header = true
 		}
-		if (rargs.named.bg)
-			args.truecolor = rargs.named.bg
 		return args
 	}
 
