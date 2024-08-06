@@ -442,6 +442,9 @@ class Markup_12y2 { constructor() {
 				} break; case '\\sup': {
 					OPEN('superscript')
 					word_maybe()
+				} break; case '\\small': {
+					OPEN('small')
+					word_maybe()
 				} break; case '\\b': {
 					OPEN('bold')
 					word_maybe()
@@ -490,6 +493,10 @@ class Markup_12y2 { constructor() {
 					if (!is_color(color))
 						color = null
 					OPEN('background_color', {color})
+				} break; case '\\lang': {
+					let [lang] = rargs
+					OPEN('language', {lang})
+					word_maybe()
 				}}
 			} break; case 'STYLE': {
 				let c = check_style(token, text.charAt(match.index-1)||"\n", text.charAt(REGEX.lastIndex)||"\n")

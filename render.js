@@ -297,6 +297,8 @@ we should create our own fake bullet elements instead.*/
 		
 		superscript: 𐀶`<sup>`,
 		
+		small: 𐀶`<small>`,
+		
 		/*anchor: function({name}) {
 			let e = this()
 			e.id = "Markup-anchor-"+name
@@ -326,6 +328,12 @@ we should create our own fake bullet elements instead.*/
 				e.dataset.bgcolor = color
 			return e
 		}.bind(𐀶`<span class='M-background'>`),
+		
+		language: function({lang}) {
+			let e = this()
+			e.lang = lang
+			return e
+		}.bind(𐀶`<span>`),
 		
 		invalid: function({text, reason}) {
 			let e = this()
