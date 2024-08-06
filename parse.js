@@ -494,7 +494,7 @@ class Markup_12y2 { constructor() {
 						color = null
 					OPEN('background_color', {color})
 				} break; case '\\lang': {
-					let [lang] = rargs
+					let [lang=""] = rargs
 					OPEN('language', {lang})
 					word_maybe()
 				}}
