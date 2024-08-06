@@ -453,3 +453,15 @@ y12-video > * {
 	font-size: 1.125em;
 	font-weight: bold;
 }
+
+/*************/
+/** Styling **/
+/*************/
+
+.M-small-caps {
+	font-variant: small-caps;
+}
+
+.M-overline {
+	text-decoration: overline;
+}

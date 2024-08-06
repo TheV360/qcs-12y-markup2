@@ -299,6 +299,10 @@ we should create our own fake bullet elements instead.*/
 		
 		small: 𐀶`<small>`,
 		
+		small_caps: 𐀶`<span class='M-small-caps'>`,
+		
+		overline: 𐀶`<span class='M-overline'>`,
+		
 		/*anchor: function({name}) {
 			let e = this()
 			e.id = "Markup-anchor-"+name

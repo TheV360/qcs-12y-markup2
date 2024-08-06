@@ -445,6 +445,12 @@ class Markup_12y2 { constructor() {
 				} break; case '\\sm': {
 					OPEN('small')
 					word_maybe()
+				} break; case '\\sc': {
+					OPEN('small_caps')
+					word_maybe()
+				} break; case '\\ov': {
+					OPEN('overline')
+					word_maybe()
 				} break; case '\\b': {
 					OPEN('bold')
 					word_maybe()
