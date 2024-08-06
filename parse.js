@@ -442,7 +442,7 @@ class Markup_12y2 { constructor() {
 				} break; case '\\sup': {
 					OPEN('superscript')
 					word_maybe()
-				} break; case '\\small': {
+				} break; case '\\sm': {
 					OPEN('small')
 					word_maybe()
 				} break; case '\\b': {
