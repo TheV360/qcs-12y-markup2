@@ -46,6 +46,7 @@ class Markup_YoutubeElement extends HTMLElement {
 			if (this._query)
 				src += `&${this._query}`
 			this.$iframe.src = src
+			this.$iframe.allowFullscreen = true
 			this.$link.replaceWith(this.$iframe)
 		} else {
 			this.$iframe.replaceWith(this.$link)
@@ -63,6 +64,7 @@ class Markup_YoutubeElement extends HTMLElement {
 		if (!url)
 			return // todo: allow setting back to unloaded state?
 		url = url.replace("/shorts/", "/watch?v=") // 🤮
+		url = url.replace("://music.", "://www.") // i hope this works
 		if (this._href == url)
 			return
 		this._href = url
@@ -72,13 +74,45 @@ class Markup_YoutubeElement extends HTMLElement {
 		
 		let [, id, query] = /^https?:[/][/](?:www[.])?(?:youtube.com[/]watch[?]v=|youtu[.]be[/])([\w-]{11,})([&?].*)?$/.exec(url)
 		if (query) {
+			function parse_time(str) {
+				let r = /^(?:([0-9.]+)h)?(?:([0-9.]+)m)?([0-9.]+)s?$/.exec(str)
+				if (r) {
+					let [_, h=0, m=0, s=0] = r
+					return +h*3600 + +m*60 + +s
+				}
+				return str
+			}
+			function render_time(n) {
+				if (!n)
+					return "x"
+				let s = n % 60 | 0
+				n /= 60
+				let m = n % 60 | 0
+				n /= 60
+				let h = n % 60 | 0
+				if (h)
+					return h+":"+m+":"+s
+				return m+":"+s
+			}
 			let time = /[&?](?:t|start)=([^&?]+)/.exec(query)
 			let end = /[&?]end=([^&?]+)/.exec(query)
 			let loop = /[&?]loop(?:=|&|$)/.exec(query)
 			query = ""
-			if (time) query += "&start="+time[1]
-			if (end) query += "&end="+end[1]
-			if (loop) query += "&loop=1&playlist="+id
+			if (time) {
+				time = parse_time(time[1])
+				query += "&start="+time
+			}
+			if (end) {
+				end = parse_time(end[1])
+				query += "&end="+end
+			}
+			//if (loop) query += "&loop=1&playlist="+id // this is broken now..
+			let info = ""
+			if (time && end)
+				info = "at "+render_time(time)+" – "+render_time(end)
+			else if (time)
+				info = "at "+render_time(time)
+			this.$how.textContent = info
 		}
 		this._query = query
 		
@@ -124,6 +158,7 @@ Markup_YoutubeElement.observedAttributes = ['data-href']
 		<span id=author></span>
 	</cite>
 </a>
+<div id=how></div>
 <button hidden id=close>❌ close</button>
 <style>
 	:host {
@@ -170,6 +205,10 @@ Markup_YoutubeElement.observedAttributes = ['data-href']
 	#author {
 		font-style: normal;
 		font-weight: bold;
+	}
+	#how {
+		padding-left: 2px;
+		font-family: monospace;
 	}
 </style>
 `
