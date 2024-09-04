@@ -12,7 +12,7 @@ class Markup_12y2 { constructor() {
 		'{EOL}': "(?![^\\n])",
 		'{BOL}': "^",
 		'{ANY}': "[^]",
-		'{LINE_WS}': "[^\n\S]",
+		'{HORIZ_WS}': "[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]",
 		'{URL_CHARS}': "[-\\w/%&=#+~@$*'!?,.;:]*",
 		'{URL_FINAL}': "[-\\w/%&=#+~@$*']",
 	}
@@ -43,9 +43,9 @@ class Markup_12y2 { constructor() {
 	`[\`][^\`\n]*([\`]{2}[^\`\n]*)*[\`]?${'INLINE_CODE'}`
 	`([!]${'EMBED'})?\b(https?://|sbs:){URL_CHARS}{URL_FINAL}([(]{URL_CHARS}[)]({URL_CHARS}{URL_FINAL})?)?${'LINK'}`
 	`{BOL}[|][-][-+]*[-][|]{EOL}${'TABLE_DIVIDER'}` // `{BOL}[|][|][|]{EOL}${'TABLE_DIVIDER'}`
-	`{BOL}{LINE_WS}*[|]${'TABLE_START'}`
-	`{LINE_WS}*[|][|]?${'TABLE_CELL'}`
-	`{BOL}{LINE_WS}*[-]${'LIST_ITEM'}`
+	`{BOL}{HORIZ_WS}*[|]${'TABLE_START'}`
+	`{HORIZ_WS}*[|][|]?${'TABLE_CELL'}`
+	`{BOL}{HORIZ_WS}*[-]${'LIST_ITEM'}`
 	()
 	
 	//todo: org tables separators?
@@ -314,7 +314,8 @@ class Markup_12y2 { constructor() {
 	}
 	const ARG_REGEX = /.*?(?=])/y
 	const WORD_REGEX = /[^\s`^()+=\[\]{}\\|"';:,.<>/?!*]*/y
-	const CODE_REGEX = /(?:[^\n\S]*([-\w.+#$ ]+?)[^\n\S]*(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
+	const CODE_REGEX = /(?:[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]*([-\w.+#$ ]+?)[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]*(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
+	// FIXME: should directly use {HORIZ_WS} macro
 	
 	const parse=(text)=>{
 		let tree = {type: 'ROOT', content: [], prev: 'all_newline'}
