@@ -12,6 +12,7 @@ class Markup_12y2 { constructor() {
 		'{EOL}': "(?![^\\n])",
 		'{BOL}': "^",
 		'{ANY}': "[^]",
+		'{LINE_WS}': "[^\n\S]",
 		'{URL_CHARS}': "[-\\w/%&=#+~@$*'!?,.;:]*",
 		'{URL_FINAL}': "[-\\w/%&=#+~@$*']",
 	}
@@ -42,9 +43,9 @@ class Markup_12y2 { constructor() {
 	`[\`][^\`\n]*([\`]{2}[^\`\n]*)*[\`]?${'INLINE_CODE'}`
 	`([!]${'EMBED'})?\b(https?://|sbs:){URL_CHARS}{URL_FINAL}([(]{URL_CHARS}[)]({URL_CHARS}{URL_FINAL})?)?${'LINK'}`
 	`{BOL}[|][-][-+]*[-][|]{EOL}${'TABLE_DIVIDER'}` // `{BOL}[|][|][|]{EOL}${'TABLE_DIVIDER'}`
-	`{BOL} *[|]${'TABLE_START'}`
-	` *[|][|]?${'TABLE_CELL'}`
-	`{BOL} *[-]${'LIST_ITEM'}`
+	`{BOL}{LINE_WS}*[|]${'TABLE_START'}`
+	`{LINE_WS}*[|][|]?${'TABLE_CELL'}`
+	`{BOL}{LINE_WS}*[-]${'LIST_ITEM'}`
 	()
 	
 	//todo: org tables separators?
@@ -313,7 +314,7 @@ class Markup_12y2 { constructor() {
 	}
 	const ARG_REGEX = /.*?(?=])/y
 	const WORD_REGEX = /[^\s`^()+=\[\]{}\\|"';:,.<>/?!*]*/y
-	const CODE_REGEX = /(?: *([-\w.+#$ ]+?) *(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
+	const CODE_REGEX = /(?:[^\n\S]*([-\w.+#$ ]+?)[^\n\S]*(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
 	
 	const parse=(text)=>{
 		let tree = {type: 'ROOT', content: [], prev: 'all_newline'}
@@ -323,7 +324,8 @@ class Markup_12y2 { constructor() {
 		// these use REGEX, text
 		const skip_spaces=()=>{
 			let pos = REGEX.lastIndex
-			while (" "===text.charAt(pos))
+			// FIXME: should be regex-based to catch all types of whitespace whatever they may be
+			while (" "===text.charAt(pos) || "\t"===text.charAt(pos))
 				pos++
 			REGEX.lastIndex = pos
 		}
@@ -528,7 +530,7 @@ class Markup_12y2 { constructor() {
 							CLOSE(true)
 						CLOSE() // cell
 						// TODO: HACK
-						if (/^ *[|][|]/.test(token)) {
+						if (/^[^\n\S]*[|][|]/.test(token)) {
 							let last = current.content[current.content.length-1]
 							last.args.div = true
 						}
