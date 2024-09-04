@@ -314,8 +314,8 @@ class Markup_12y2 { constructor() {
 	}
 	const ARG_REGEX = /.*?(?=])/y
 	const WORD_REGEX = /[^\s`^()+=\[\]{}\\|"';:,.<>/?!*]*/y
-	const CODE_REGEX = /(?:[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]*([-\w.+#$ ]+?)[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]*(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
-	// FIXME: should directly use {HORIZ_WS} macro
+	const CODE_REGEX = /(?: *([-\w.+#$ ]+?) *(?![^\n]))?\n?([^]*?)(?:\n?```|$)/y // ack
+	const SPACE_REGEX = new RegExp(`${MACROS['{HORIZ_WS}']}*`, 'y')
 	
 	const parse=(text)=>{
 		let tree = {type: 'ROOT', content: [], prev: 'all_newline'}
@@ -324,11 +324,9 @@ class Markup_12y2 { constructor() {
 		
 		// these use REGEX, text
 		const skip_spaces=()=>{
-			let pos = REGEX.lastIndex
-			// FIXME: should be regex-based to catch all types of whitespace whatever they may be
-			while (" "===text.charAt(pos) || "\t"===text.charAt(pos))
-				pos++
-			REGEX.lastIndex = pos
+			SPACE_REGEX.lastIndex = REGEX.lastIndex
+			SPACE_REGEX.exec(text)
+			REGEX.lastIndex = SPACE_REGEX.lastIndex
 		}
 		const read_code=()=>{
 			let pos = REGEX.lastIndex
