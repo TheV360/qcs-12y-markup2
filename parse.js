@@ -529,7 +529,7 @@ class Markup_12y2 { constructor() {
 							CLOSE(true)
 						CLOSE() // cell
 						// TODO: HACK
-						if (/^[^\n\S]*[|][|]/.test(token)) {
+						if (/^ *[|][|]/.test(token)) {
 							let last = current.content[current.content.length-1]
 							last.args.div = true
 						}
