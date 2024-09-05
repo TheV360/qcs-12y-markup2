@@ -12,7 +12,7 @@ class Markup_12y2 { constructor() {
 		'{EOL}': "(?![^\\n])",
 		'{BOL}': "^",
 		'{ANY}': "[^]",
-		'{HORIZ_WS}': "[ \t\xA0\u1680\u2000-\u200A\u202F\u205F\u3000]",
+		'{HORIZ_WS}': "[ \t]",
 		'{URL_CHARS}': "[-\\w/%&=#+~@$*'!?,.;:]*",
 		'{URL_FINAL}': "[-\\w/%&=#+~@$*']",
 	}
