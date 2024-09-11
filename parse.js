@@ -117,7 +117,7 @@ class Markup_12y2 { constructor() {
 				type = 'audio'
 			else if (/[.](mp4|mkv|mov|webm|avi|flv|m4v|mpeg|mpg|ogv|ogm|ogx|wmv|xvid)\b/i.test(url))
 				type = 'video'
-			else if (/^https?:[/][/](?:www[.])?(?:youtube.com[/]watch[?]v=|youtu[.]be[/]|youtube.com[/]shorts[/])[\w-]{11}/.test(url)) {
+			else if (/^https?:[/][/](?:www[.]|music[.])?(?:youtube.com[/]watch[?]v=|youtu[.]be[/]|youtube.com[/]shorts[/])[\w-]{11}/.test(url)) {
 				// todo: accept [start-end] args maybe?
 				type = 'youtube'
 			}
