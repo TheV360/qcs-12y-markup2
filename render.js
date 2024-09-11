@@ -132,7 +132,7 @@ class Markup_Render_Dom { constructor() {
 			let link = e.firstChild
 			link.href = url
 			link.title = url
-			link.lastChild.textContent = url.replace(/.*[/]/, "…/")
+			link.lastChild.textContent = url.replace(/.*[/]/, "…/").replace(/[?].*$/, "?…")
 			return e
 		}.bind(𐀶`<y12-audio><a>🎵️<span></span></a></y12-audio>`),
 		
