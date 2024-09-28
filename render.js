@@ -223,15 +223,28 @@ class Markup_Render_Dom { constructor() {
 			return e
 		}.bind(𐀶`<a name="" class=M-anchor></a>`),
 		
-		quote: function({cite}) {
-			if (cite==null)
+		quote: function({cite, link}) {
+			if (cite==null && link==null)
 				return this[0]()
 			let e = this[1]()
-			e.firstChild.textContent = cite
+			let o = e.firstChild.firstChild
+			if (link) {
+				let l = this[2]()
+				if (!link.startsWith("#")) {
+					link = filter_url(link, 'link')
+					l.target = '_blank'
+				} else {
+					l.target = '_self'
+				}
+				l.href = link
+				o = o.appendChild(l)
+			}
+			o.textContent = cite || link
 			return e.lastChild
 		}.bind([
-			𐀶`<blockquote class='M-quote'>`,
-			𐀶`<blockquote class='M-quote'><cite class='M-quote-label'></cite>:<div class='M-quote-inner'></div></blockquote>`, // should we have -outer class?
+			𐀶`<blockquote class=M-quote>`,
+			𐀶`<blockquote class=M-quote><div class=M-quote-outer><cite class=M-quote-label></cite>:</div><div class=M-quote-inner>`,
+			𐀶`<a href="" class='M-link M-quote-link'>`
 		]),
 		
 		table: function() {

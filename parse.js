@@ -464,7 +464,7 @@ class Markup_12y2 { constructor() {
 					OPEN('strikethrough')
 					word_maybe()
 				} break; case '\\quote': {
-					OPEN('quote', {cite: rargs[0]})
+					OPEN('quote', {cite: rargs[0], link: rargs.named.link || rargs[1]})
 				} break; case '\\align': {
 					let a = rargs[0]
 					if (!['left', 'right', 'center'].includes(a))
@@ -626,7 +626,7 @@ class Markup_12y2 { constructor() {
 					continue main
 				}
 				ACCEPT()
-				OPEN('quote', {cite: rargs[0]})
+				OPEN('quote', {cite: rargs[0], link: rargs.named.link || rargs[1]})
 			} break; case 'CODE_BLOCK': {
 				let [lang, code] = read_code()
 				ACCEPT()
