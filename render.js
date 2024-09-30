@@ -309,8 +309,10 @@ we should create our own fake bullet elements instead.*/
 			return e
 		}.bind(𐀶`<span id="" class='M-anchor'>`),*/
 		
-		ruby: function({text}) {
+		ruby: function({text, side}) {
 			let e = this()
+			if (['over', 'under'].includes(side))
+				e.style.rubyPosition = side
 			e.lastChild.textContent = text
 			return e.firstChild
 		}.bind(𐀶`<ruby><span></span><rt>`), // I don't think we need <rp> since we're rendering for modern browsers...

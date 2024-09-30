@@ -474,8 +474,8 @@ class Markup_12y2 { constructor() {
 					let [label="spoiler"] = rargs
 					OPEN('spoiler', {label})
 				} break; case '\\ruby': {
-					let [txt="true"] = rargs
-					OPEN('ruby', {text: txt})
+					let [text="true", side] = rargs
+					OPEN('ruby', {text, side})
 					word_maybe()
 				} break; case '\\key': {
 					OPEN('key')
